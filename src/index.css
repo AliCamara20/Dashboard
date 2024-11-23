@@ -151,6 +151,7 @@ body{
   padding: 1em 0;
   border-radius: 20px;
   position: relative;
+  margin-bottom: 5em;
 }
 
 .sort-corner{
@@ -376,7 +377,9 @@ td:first-child{
     
     }
    
-    
+    .customer-section{
+      margin-bottom: 0;
+    }
 
     .email{
       display: inline-block;
