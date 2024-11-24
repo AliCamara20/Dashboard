@@ -277,6 +277,33 @@ td:first-child{
   background-color: #856fdb;
   color: #fff;
 }
+
+.pagination-btn:active{
+  background-color: #856fdb;
+}
+
+.loader{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 5px solid #856fdb;
+  border-top: 5px solid #5D3FD3;
+  border-bottom: 5px solid #5D3FD3;
+  margin: 50% auto;
+  animation: spin 1s ease infinite;
+  
+}
+
+@keyframes spin {
+ 0%{
+  transform: rotate(0deg);
+ }
+
+ 100%{
+  transform: rotate(360deg);
+ }
+  
+}
 @media (min-width: 1200px) {
   .nav_list{
     display: block;
@@ -426,5 +453,9 @@ td:first-child{
     .center{
       text-align: right;
       margin-bottom: 20px 0;
+    }
+
+    .loader{
+      margin: 30% auto;
     }
 }

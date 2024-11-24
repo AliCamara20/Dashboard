@@ -1,11 +1,12 @@
 import Navbar from "./Sidebar"
 import Main from './MainContent';
 import { initialCustomers } from "./Data";
+import { totalCustomers } from "./Data";
 import { useState } from "react";
 export default function Dashboard(){
 
     const [customers, setCustomers] = useState(initialCustomers);
-    let activeCustomers = customers.filter( c => c.active);
+    let activeCustomers = totalCustomers.filter( c => c.active);
     
 
 
@@ -28,10 +29,10 @@ export default function Dashboard(){
     return(
         <> 
          <Navbar />
-         <Main numOfCustomers={customers.length} 
-            numOfMembers={customers.length} 
+         <Main numOfCustomers={totalCustomers.length} 
+            numOfMembers={totalCustomers.length} 
             numOfActive={activeCustomers.length} 
-            customers={customers} 
+            customers={customers}
             onLocationClick={handleSortByLocation}
             onNameClick={handleSortByName}
             setCustomers={setCustomers}
