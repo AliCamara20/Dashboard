@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import arrowDownKey from './assets/arrow-down.svg'
 import placeholder from './assets/user.jpg'
 import { totalCustomers } from './Data'
 import Loader from './Loader'
 export default function SortableCustomerTable({customers, onLocationClick, onNameClick, setCustomers}){
     const[loading, setLoading] = useState(false);
-
+    const [index, setIndex]  = useState(0);
     let customer = customers.map( c =>  <tr key={c.id}>
         <td ><img src={c.photo} alt= {c.name} className=""/></td>
         <td>{c.name}</td>
@@ -13,8 +13,8 @@ export default function SortableCustomerTable({customers, onLocationClick, onNam
         <td>{c.location} </td>
     </tr>)
 
-    
-   
+
+
     return(
         <section className="customer-section ">
             <div className="container">
@@ -40,6 +40,8 @@ export default function SortableCustomerTable({customers, onLocationClick, onNam
                     setCustomers={setCustomers}
                     loading={loading}
                     setLoading={setLoading}
+                    setIndex={setIndex}
+                    index={index}
                     
                 />    
                     
@@ -74,8 +76,28 @@ function onPageChangeClick(sliceIndex, newEnd , setCustomers){
     setCustomers(nextSection);
 }
 
-function Pagination({onPageChangeClick , setCustomers, loading, setLoading}){
 
+function Pagination({onPageChangeClick , setCustomers, loading, setLoading, index, setIndex}){
+
+    const nextPage = (index, setIndex) => {
+        setIndex( index + 1);
+        console.log(index);
+        switch(index){
+            case 0: {onPageChangeClick(10, 20 , setCustomers); break};            
+            case 1: {onPageChangeClick(20, 30 , setCustomers); break};   
+            case 2: {onPageChangeClick(30, 40 , setCustomers); break};   
+                
+        }
+    }
+
+    const previousPage = (index, setIndex) => {
+        setIndex(index - 1);
+        switch(index){
+            case 3: {onPageChangeClick(20, 30 , setCustomers); break};
+            case 2: {onPageChangeClick(10, 20 , setCustomers); break};
+            case 1: {onPageChangeClick(0, 10 , setCustomers); break};
+        }
+    }
 
     async function fetchData() {
         setLoading(true);
@@ -88,8 +110,15 @@ function Pagination({onPageChangeClick , setCustomers, loading, setLoading}){
         } catch (error) {
             console.log(error);
         }
+        finally{
+            console.log('fetched'); 
+        }
         
     }
+
+   
+
+    
     
     
     function getData(loading){
@@ -104,10 +133,13 @@ function Pagination({onPageChangeClick , setCustomers, loading, setLoading}){
     return(
         <div className="center">
             <section className="pagination">
+                <PaginationButton  label={'<'} onPageChangeClick={() =>{ previousPage(index, setIndex); fetchData()}} disabled = {index === 0} />
                 <PaginationButton label={'1'} onPageChangeClick={() => {onPageChangeClick(0, 10 , setCustomers); fetchData()}} />
                 <PaginationButton label={'2'} onPageChangeClick={() => {onPageChangeClick(10, 20, setCustomers); fetchData()}} />
                 <PaginationButton label={'3'} onPageChangeClick={() => {onPageChangeClick(20, 30, setCustomers); fetchData()}}/>
                 <PaginationButton label={'4'} onPageChangeClick={() => {onPageChangeClick(30, 40, setCustomers); fetchData()}}/>
+                <PaginationButton  label={'>'} onPageChangeClick={() =>{ nextPage(index, setIndex); fetchData()}} disabled = {index === 3} />
+
                 
             </section>
         </div>
@@ -117,8 +149,8 @@ function Pagination({onPageChangeClick , setCustomers, loading, setLoading}){
    
 }
 
-function PaginationButton({label, onPageChangeClick}){
-    return <button className='pagination-btn' onClick={onPageChangeClick}>{label} </button>
+function PaginationButton({label, onPageChangeClick, ...props}){
+    return <button className='pagination-btn' onClick={onPageChangeClick} {...props}>{label} </button>
 }
 
 
