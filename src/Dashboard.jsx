@@ -1,12 +1,20 @@
 import Navbar from "./Sidebar"
 import Main from './MainContent';
-import { initialCustomers } from "./Data";
-import { totalCustomers } from "./Data";
+import { initialCustomers , totalCustomers, filterCustomers} from "./Data";
 import { useState } from "react";
 export default function Dashboard(){
 
     const [customers, setCustomers] = useState(initialCustomers);
+    const [query, setQuery] = useState('');
     let activeCustomers = totalCustomers.filter( c => c.active);
+    const results = filterCustomers(customers, query);
+
+
+
+    function handleTextChange(e){
+        setQuery(e.target.value);
+        console.log(query)
+    }
     
 
 
@@ -25,17 +33,18 @@ export default function Dashboard(){
     }
 
     
-    
     return(
         <> 
          <Navbar />
          <Main numOfCustomers={totalCustomers.length} 
             numOfMembers={totalCustomers.length} 
             numOfActive={activeCustomers.length} 
-            customers={customers}
+            customers={results}
             onLocationClick={handleSortByLocation}
             onNameClick={handleSortByName}
             setCustomers={setCustomers}
+            query={query}
+            onChange={handleTextChange}
            
          />
         </>

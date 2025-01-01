@@ -421,9 +421,16 @@ const initialCustomers = [
   // Add the remaining customers similarly
 ];
 
+
+function filterCustomers(customers, query){
+  query = query.toLowerCase();
+
+  return customers.filter(customer => customer.name.split(' ')
+  .some( word => word.toLowerCase().startsWith(query)));
+}
  
 
 
-export{initialCustomers, totalCustomers}
+export{initialCustomers, totalCustomers, filterCustomers};
 
    
