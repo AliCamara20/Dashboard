@@ -7,7 +7,7 @@ export default function SortableCustomerTable({customers, onLocationClick, onNam
     const[loading, setLoading] = useState(false);
     const [index, setIndex]  = useState(0);
     let customer = customers.map( c =>  <tr key={c.id}>
-        <td ><img src={c.photo} alt= {c.name} className=""/></td>
+        <td ><img src={ c.photo}  className="profile_img skeleton"/></td>
         <td>{c.name}</td>
         <td className = 'email'>{c.email}</td>
         <td>{c.location} </td>
@@ -73,14 +73,15 @@ function Header({handleLocationClick, handleNameClick}){
 function onPageChangeClick(sliceIndex, newEnd , setCustomers){
     let nextSection = [...totalCustomers.slice(sliceIndex, newEnd)]
     console.log(nextSection)
-    setCustomers(nextSection);
+    setCustomers(nextSection);    
 }
 
 
 function Pagination({onPageChangeClick , setCustomers, loading, setLoading, index, setIndex}){
-
+    const [activeIndex, setActiveIndex] = useState(1);
     const nextPage = (index, setIndex) => {
-        setIndex( index + 1);
+        setIndex( index => index + 1);
+        if(activeIndex < 5) setActiveIndex(activeIndex => activeIndex + 1)
         console.log(index);
         switch(index){
             case 0: {onPageChangeClick(10, 20 , setCustomers); break};            
@@ -91,7 +92,8 @@ function Pagination({onPageChangeClick , setCustomers, loading, setLoading, inde
     }
 
     const previousPage = (index, setIndex) => {
-        setIndex(index - 1);
+        setIndex( index => index - 1);
+        if(activeIndex > 1) setActiveIndex(activeIndex => activeIndex - 1)
         switch(index){
             case 3: {onPageChangeClick(20, 30 , setCustomers); break};
             case 2: {onPageChangeClick(10, 20 , setCustomers); break};
@@ -133,12 +135,33 @@ function Pagination({onPageChangeClick , setCustomers, loading, setLoading, inde
     return(
         <div className="center">
             <section className="pagination">
-                <PaginationButton  label={'<'} onPageChangeClick={() =>{ previousPage(index, setIndex); fetchData()}} disabled = {index === 0} />
-                <PaginationButton label={'1'} onPageChangeClick={() => {onPageChangeClick(0, 10 , setCustomers); fetchData()}} />
-                <PaginationButton label={'2'} onPageChangeClick={() => {onPageChangeClick(10, 20, setCustomers); fetchData()}} />
-                <PaginationButton label={'3'} onPageChangeClick={() => {onPageChangeClick(20, 30, setCustomers); fetchData()}}/>
-                <PaginationButton label={'4'} onPageChangeClick={() => {onPageChangeClick(30, 40, setCustomers); fetchData()}}/>
-                <PaginationButton  label={'>'} onPageChangeClick={() =>{ nextPage(index, setIndex); fetchData()}} disabled = {index === 3} />
+                <PaginationButton  onPageChangeClick={() =>{ previousPage(index, setIndex); fetchData()}} disabled = {index === 0} >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg>
+                </PaginationButton>
+                <PaginationButton  
+                    onPageChangeClick={() => {onPageChangeClick(0, 10 , setCustomers); fetchData(); setIndex(0)}}
+                    isActive={ activeIndex === 1}
+                    onShow={() => setActiveIndex(1)}
+                >1</PaginationButton>
+                <PaginationButton  
+                    onPageChangeClick={() => {onPageChangeClick(10, 20, setCustomers); fetchData(); setIndex(1)}}
+                    isActive={activeIndex === 2}
+                    onShow={() => setActiveIndex(2)}
+                    
+                >2</PaginationButton>
+                <PaginationButton  
+                    onPageChangeClick={() => {onPageChangeClick(20, 30, setCustomers); fetchData(); setIndex(2)}}
+                    isActive={activeIndex === 3}
+                    onShow={() => setActiveIndex(3)}
+                >3</PaginationButton>
+                <PaginationButton  
+                    onPageChangeClick={() => {onPageChangeClick(30, 40, setCustomers); fetchData(); setIndex(3)}}
+                    isActive={activeIndex === 4}
+                    onShow={() => setActiveIndex(4)}
+                >4</PaginationButton>
+                <PaginationButton  onPageChangeClick={() =>{ nextPage(index, setIndex); fetchData()}} disabled = {index === 3} >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>   
+                </PaginationButton>
 
                 
             </section>
@@ -149,8 +172,8 @@ function Pagination({onPageChangeClick , setCustomers, loading, setLoading, inde
    
 }
 
-function PaginationButton({label, onPageChangeClick, ...props}){
-    return <button className='pagination-btn' onClick={onPageChangeClick} {...props}>{label} </button>
+function PaginationButton({children, isActive,  onPageChangeClick, onShow,  ...props}){
+    return <button className={isActive ? 'pagination-btn' + ' active-btn' : 'pagination-btn' } onClick={ () => {onPageChangeClick(); onShow()}} {...props}>{children}</button>
 }
 
 
