@@ -38,9 +38,18 @@ body{
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  
+}
+
+.nav_item{
+  cursor: pointer;
+  width: fit-content;
+  margin: 0 auto;
+  
+  
 }
 
 .container{
@@ -49,15 +58,14 @@ body{
   margin: 0 auto;
 }
 
-.nav_item{
-  cursor: pointer;
-}
+
 .active{
   background-color:#5D3FD3;
   color: #fff;
   margin-top: 10px;
   padding: 5px 20px;
   position: relative;
+  
     
 }
 
@@ -67,6 +75,7 @@ body{
 .nav_item svg, .sidebar-header svg{
   width: 30px;
   height: 30px;
+ 
 }
 
 .main-header{
