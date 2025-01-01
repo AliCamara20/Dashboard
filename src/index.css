@@ -246,6 +246,7 @@ td:first-child{
   object-fit: cover;
 }
 
+
 .skeleton{
   animation: skeleton-loading 1s linear infinite alternate;
 }
@@ -267,11 +268,7 @@ td:first-child{
 }
 .pagination{
   display: flex;
-  margin-left: auto;
-  align-items: center;
-  align-items: flex-end;
-  
-  
+  justify-content: flex-end;  
 }
 
 .pagination-btn{
